@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fetch Stock Data</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef2f7;
+      padding: 30px;
+    }
+    .box {
+      background-color: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      max-width: 1000px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      color: #34495e;
+    }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 30px;
+      background-color: #2980b9;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      display: none;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>📋 All Stock Transactions</h2>
+    <button onclick="fetchData()">Fetch Data</button>
+
+    <table id="stockTable">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Username</th>
+          <th>Stock Symbol</th>
+          <th>Company</th>
+          <th>Type</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Date</th>
+          <th>Total Value</th>
+          <th>Sector</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    function fetchData() {
+      fetch("/api/items")
+        .then(res => res.json())
+        .then(data => {
+          const table = document.getElementById("stockTable");
+          const body = document.getElementById("tableBody");
+          body.innerHTML = "";
+          data.forEach(row => {
+            body.innerHTML += `
+              <tr>
+                <td>${row.user_id}</td>
+                <td>${row.username}</td>
+                <td>${row.stock_symbol}</td>
+                <td>${row.stock_company_name}</td>
+                <td>${row.transaction_type}</td>
+                <td>${row.quantity}</td>
+                <td>${row.price}</td>
+                <td>${row.transaction_date}</td>
+                <td>${row.total_value}</td>
+                <td>${row.sector}</td>
+              </tr>
+            `;
+          });
+          table.style.display = "table";
+        });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sell Stock</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8ff;
+      color: #000;
+      margin: 0;
+      padding: 20px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    h2 {
+      text-align: center;
+      color: #006699;
+    }
+
+    .form-container {
+      max-width: 500px;
+      margin: auto;
+      background-color: #ffffff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .submit-btn:hover {
+      background-color: #218838;
+    }
+
+    .toggle-btn {
+      margin-top: 20px;
+      background-color: #006699;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .toggle-btn:hover {
+      background-color: #004d66;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #28a745;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
+
+    .popup.error {
+      background-color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+  <h2>🛒 Sell Stock</h2>
+  <div class="form-container">
+    <form id="sellForm">
+      <div class="form-group">
+        <label for="user_id">User ID</label>
+        <input type="number" id="user_id" name="user_id" required />
+      </div>
+
+      <div class="form-group">
+        <label for="stock_symbol">Stock Symbol</label>
+        <input type="text" id="stock_symbol" name="stock_symbol" required />
+      </div>
+
+      <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" name="quantity" required />
+      </div>
+
+      <button type="submit" class="submit-btn">Sell</button>
+    </form>
+
+    <button onclick="toggleDarkMode()" class="toggle-btn">Toggle Dark Mode</button>
+  </div>
+
+  <div id="popup" class="popup"></div>
+
+  <script>
+    const form = document.getElementById('sellForm');
+    const popup = document.getElementById('popup');
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const user_id = parseInt(document.getElementById('user_id').value);
+      const stock_symbol = document.getElementById('stock_symbol').value.trim().toUpperCase();
+      const quantity = parseInt(document.getElementById('quantity').value);
+
+      if (isNaN(user_id) || isNaN(quantity) || !stock_symbol) {
+        showPopup("Please enter valid values.", true);
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:4050/api/items/sell', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id, stock_symbol, quantity })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          showPopup(result.message || "Stock sold successfully!");
+          form.reset();
+        } else {
+          showPopup(result.error || "Sell failed!", true);
+        }
+      } catch (error) {
+        console.error("Sell error:", error);
+        showPopup("An error occurred while selling.", true);
+      }
+    });
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function showPopup(message, isError = false) {
+      popup.textContent = message;
+      popup.className = "popup";
+      if (isError) popup.classList.add("error");
+      popup.style.display = "block";
+      setTimeout(() => { popup.style.display = "none"; }, 2000);
+    }
+  </script>
+</body>
+</html>

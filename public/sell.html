@@ -1,0 +1,171 @@
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sell Stocks</title>
+  <style>
+    body {
+      background: #fff3f3;
+      font-family: Arial, sans-serif;
+    } 
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #c0392b;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+    }
+    button:hover {
+      background-color: #c0392b;
+    }
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Sell Stocks</h2>
+    <input id="user_id" type="number" placeholder="User ID" required />
+    <input id="stock_symbol" type="text" placeholder="Stock Symbol" required />
+    <input id="quantity" type="number" placeholder="Quantity to Sell" required />
+    <button onclick="sellStock()">Sell</button>
+    <div class="back-link">
+      <a href="view.html">⬅ Back to Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    async function sellStock() {
+      const user_id = document.getElementById('user_id').value;
+      const stock_symbol = document.getElementById('stock_symbol').value;
+      const quantity = document.getElementById('quantity').value;
+
+      if (!user_id || !stock_symbol || !quantity) {
+        return alert('All fields are required!');
+      }
+
+      try {
+        const response = await fetch('http://localhost:4050/api/items/sell', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: parseInt(user_id),
+            stock_symbol: stock_symbol.toUpperCase(),
+            quantity: parseInt(quantity)
+          })
+        });
+
+        const result = await response.json();
+        alert(result.message || result.error);
+      } catch (err) {
+        alert('Error while selling stock.');
+      }
+    }
+  </script>
+</body>
+</html>  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sell Stock</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffebee;
+      padding: 30px;
+    }
+    .box {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      color: #c62828;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #e53935;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #c62828;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Sell Stock</h2>
+    <input type="number" placeholder="User ID" id="user_id">
+    <input type="text" placeholder="Username" id="username">
+    <input type="text" placeholder="Stock Symbol" id="stock_symbol">
+    <input type="text" placeholder="Company Name" id="stock_company_name">
+    <input type="number" placeholder="Quantity" id="quantity">
+    <input type="number" placeholder="Price" id="price">
+    <input type="date" id="transaction_date">
+    <input type="text" placeholder="Sector" id="sector">
+    <button onclick="submitSell()">Sell</button>
+  </div>
+
+  <script>
+    function submitSell() {
+      const data = {
+        user_id: document.getElementById("user_id").value,
+        username: document.getElementById("username").value,
+        stock_symbol: document.getElementById("stock_symbol").value,
+        stock_company_name: document.getElementById("stock_company_name").value,
+        transaction_type: "SELL",
+        quantity: document.getElementById("quantity").value,
+        price: document.getElementById("price").value,
+        transaction_date: document.getElementById("transaction_date").value,
+        sector: document.getElementById("sector").value
+      };
+
+      fetch("/api/items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(() => alert("✅ Sell transaction submitted!"))
+      .catch(err => alert("Error: " + err));
+    }
+  </script>
+</body>
+</html>
+

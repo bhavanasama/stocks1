@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stock Transactions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .form-section, .buy-section, .sell-section, .table-section {
+      background-color: #fff;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    input[type="text"], input[type="number"], input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      padding: 10px 20px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #fff;
+    }
+    .btn-buy { background-color: #27ae60; }
+    .btn-sell { background-color: #c0392b; }
+    .btn-fetch { background-color: #2980b9; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📊 Stock Transaction Portal</h2>
+
+    <!-- Form Section -->
+    <div class="form-section">
+      <h3>📝 Fill Stock Information</h3>
+      <input type="number" id="user_id" placeholder="User ID" />
+      <input type="text" id="username" placeholder="Username" />
+      <input type="text" id="stock_symbol" placeholder="Stock Symbol" />
+      <input type="text" id="stock_company_name" placeholder="Stock Company Name" />
+      <input type="number" id="quantity" placeholder="Quantity" />
+      <input type="number" id="price" placeholder="Price" />
+      <input type="date" id="transaction_date" />
+      <input type="text" id="sector" placeholder="Sector" />
+    </div>
+
+    <!-- Buy Section -->
+    <div class="buy-section">
+      <h3>🟢 Buy Stock</h3>
+      <p>Click below to go to the <strong>BUY</strong> stock page.</p>
+      <button class="btn-buy" onclick="window.location.href='buy.html'">Go to Buy Page</button>
+    </div>
+
+    <!-- Sell Section -->
+    <div class="sell-section">
+      <h3>🔴 Sell Stock</h3>
+      <p>Click below to go to the <strong>SELL</strong> stock page.</p>
+      <button class="btn-sell" onclick="window.location.href='sell.html'">Go to Sell Page</button>
+    </div>
+
+    <!-- Table Section -->
+    <div class="table-section">
+      <h3>📋 Stock Records</h3>
+      <button class="btn-fetch" onclick="window.location.href='fetch_data.html'">Fetch Data</button>
+    </div>
+  </div>
+</body>
+</html> -->

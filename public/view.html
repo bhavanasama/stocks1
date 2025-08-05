@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stock Transactions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .form-section, .buy-section, .sell-section, .table-section {
+      background-color: #fff;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    input[type="text"], input[type="number"], input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      padding: 10px 20px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #fff;
+      margin-right: 10px;
+    }
+    .btn-buy { background-color: #27ae60; }
+    .btn-sell { background-color: #c0392b; }
+    .btn-fetch { background-color: #2980b9; margin-top: 10px; }
+    .btn-submit { background-color: #2ecc71; }
+    .btn-clear { background-color: #e67e22; }
+    .btn-random { background-color: #9b59b6; }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #2ecc71;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      display: none;
+    }
+
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+      
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📊 Stock Transaction Portal</h2>
+
+    <!-- Popup Message -->
+    <div id="popup" class="popup">Submitted successfully!</div>
+
+    <!-- Form Section -->
+    <div class="form-section">
+      <h3>📝 Fill Stock Information</h3>
+      <input type="number" id="user_id" placeholder="User ID" />
+      <input type="text" id="username" placeholder="Username" />
+      <input type="text" id="stock_symbol" placeholder="Stock Symbol" />
+      <input type="text" id="stock_company_name" placeholder="Stock Company Name" />
+      <input type="number" id="quantity" placeholder="Quantity" />
+      <input type="number" id="price" placeholder="Price" />
+      <input type="date" id="transaction_date" />
+      <input type="text" id="sector" placeholder="Sector" />
+      <select id="transaction_type">
+        <option value="">Select Transaction Type</option>
+        <option value="Buy">Buy</option>
+        <option value="Sell">Sell</option>
+      </select>
+      
+
+      <!-- Buttons -->
+      <button class="btn-submit" onclick="submitForm()">Submit</button>
+      <button class="btn-clear" onclick="clearForm()">Clear</button>
+      <button class="btn-random" onclick="randomFill()">Random</button>
+    </div>
+
+    <!-- Buy Section -->
+    <div class="buy-section">
+      <h3>🟢 Buy Stock</h3>
+      <p>Click below to go to the <strong>BUY</strong> stock page.</p>
+      <button class="btn-buy" onclick="window.location.href='buy.html'">Go to Buy Page</button>
+    </div>
+
+    <!-- Sell Section -->
+    <div class="sell-section">
+      <h3>🔴 Sell Stock</h3>
+      <p>Click below to go to the <strong>SELL</strong> stock page.</p>
+      <button class="btn-sell" onclick="window.location.href='sell.html'">Go to Sell Page</button>
+    </div>
+
+    <!-- Table Section -->
+    <div class="table-section">
+      <h3>📋 Stock Records</h3>
+      <button class="btn-fetch" onclick="window.location.href='fetch_data.html'">Fetch Data</button>
+    </div>
+  </div>
+
+  <script>
+    function showPopup(message) {
+      const popup = document.getElementById("popup");
+      popup.textContent = message;
+      popup.style.display = "block";
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 2000);
+    }
+
+    function submitForm() {
+        const data = {
+          user_id: parseInt(document.getElementById("user_id").value),
+          username: document.getElementById("username").value,
+          stock_symbol: document.getElementById("stock_symbol").value,
+          stock_company_name: document.getElementById("stock_company_name").value,
+          quantity: parseInt(document.getElementById("quantity").value),
+          price: parseFloat(document.getElementById("price").value),
+          transaction_date: document.getElementById("transaction_date").value,
+          sector: document.getElementById("sector").value,
+          transaction_type: document.getElementById("transaction_type").value
+        };
+    
+        fetch('http://localhost:4050/api/items/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        })
+        .then(response => {
+          if (response.ok) {
+            showPopup("Submitted successfully!");
+            clearForm();
+          } else {
+            showPopup("Submission failed!");
+          }
+        })
+        .catch(() => showPopup("Error submitting form!"));
+      }
+    
+
+      
+
+    // fetch('http://localhost:4050/api/items/', {
+    // method: 'POST',
+      //  headers: { 'Content-Type': 'application/json' },
+     //   body: JSON.stringify(data) -->
+     // })
+    //  .then(response => {
+     //   if (response.ok) {
+      //    showPopup("Submitted successfully!");
+     //     clearForm();
+     //   } else {
+    //      showPopup("Submission failed!");
+      //  }
+    //  })
+     // .catch(() => showPopup("Error submitting form!")); -->
+
+      
+    //}
+
+    function clearForm() {
+      document.getElementById("user_id").value = "";
+      document.getElementById("username").value = "";
+      document.getElementById("stock_symbol").value = "";
+      document.getElementById("stock_company_name").value = "";
+      document.getElementById("quantity").value = "";
+      document.getElementById("price").value = "";
+      document.getElementById("transaction_date").value = "";
+      document.getElementById("sector").value = "";
+      document.getElementById("transaction_type").value = ""; 
+    }
+
+    function randomFill() {
+      const sampleNames = ["Alice", "Bob", "Charlie", "Diana"];
+      const sampleSymbols = ["AAPL", "GOOG", "TSLA", "INFY"];
+      const sampleCompanies = ["Apple", "Google", "Tesla", "Infosys"];
+      const sampleSectors = ["Technology", "Automotive", "Finance", "Healthcare"];
+      const transactionTypes = ["Buy", "Sell"];
+
+      document.getElementById("user_id").value = Math.floor(Math.random() * 1000);
+      document.getElementById("username").value = sampleNames[Math.floor(Math.random() * sampleNames.length)];
+      const i = Math.floor(Math.random() * sampleSymbols.length);
+      document.getElementById("stock_symbol").value = sampleSymbols[i];
+      document.getElementById("stock_company_name").value = sampleCompanies[i];
+      document.getElementById("quantity").value = Math.floor(Math.random() * 100 + 1);
+      document.getElementById("price").value = (Math.random() * 1000).toFixed(2);
+      document.getElementById("transaction_date").value = new Date().toISOString().slice(0, 10);
+      document.getElementById("sector").value = sampleSectors[Math.floor(Math.random() * sampleSectors.length)];
+      document.getElementById("transaction_type").value = transactionTypes[Math.floor(Math.random() * transactionTypes.length)];
+
+    }
+  </script>
+</body>
+</html>

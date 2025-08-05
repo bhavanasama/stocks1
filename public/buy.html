@@ -1,0 +1,295 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buy Stocks</title>
+  <style>
+    body {
+      background: #eafaf1;
+      font-family: Arial, sans-serif;
+    } 
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #2c7a3f;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #2ecc71;
+      color: white;
+      border: none;
+    }
+    button:hover {
+      background-color: #27ae60;
+    }
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Buy Stocks</h2>
+    <input id="user_id" type="number" placeholder="User ID" required />
+    <input id="stock_symbol" type="text" placeholder="Stock Symbol" required />
+    <input id="quantity" type="number" placeholder="Quantity to Buy" required />
+    <button onclick="buyStock()">Buy</button>
+    <div class="back-link">
+      <a href="view.html">⬅ Back to Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    async function buyStock() {
+      const user_id = document.getElementById('user_id').value;
+      const stock_symbol = document.getElementById('stock_symbol').value;
+      const quantity = document.getElementById('quantity').value;
+
+      if (!user_id || !stock_symbol || !quantity) {
+        return alert('All fields are required!');
+      }
+
+      try {
+        const response = await fetch('http://localhost:4050/api/items/buy', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: parseInt(user_id),
+            stock_symbol: stock_symbol.toUpperCase(),
+            quantity: parseInt(quantity)
+          })
+        });
+
+        const result = await response.json();
+        alert(result.message || result.error);
+      } catch (err) {
+        alert('Error while buying stock.');
+      }
+    }
+  </script>
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Buy Stock</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e8f5e9;
+      padding: 30px;
+    }
+    .box {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      color: #2e7d32;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #43a047;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #388e3c;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Buy Stock</h2>
+    <input type="number" placeholder="User ID" id="user_id">
+    <input type="text" placeholder="Stock Symbol" id="stock_symbol">
+    <input type="number" placeholder="Quantity" id="quantity">
+    <button onclick="buyStock()">Buy</button>
+  </div>
+
+  <script>
+    async function buyStock() {
+        const user_id = prompt("Enter User ID:");
+        const stock_symbol = prompt("Enter Stock Symbol:");
+        const quantity = prompt("Enter Quantity to Buy:");
+    
+        if (!user_id || !stock_symbol || !quantity) {
+          return alert("User ID, Stock Symbol, and Quantity are all required!");
+        }
+    
+        const parsedUserId = parseInt(user_id);
+        const parsedQuantity = parseInt(quantity);
+    
+        if (isNaN(parsedUserId) || isNaN(parsedQuantity) || parsedQuantity <= 0) {
+          return alert("User ID and Quantity must be valid positive numbers.");
+        }
+    
+        try {
+          const response = await fetch('http://localhost:4050/api/items/buy', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              user_id: parsedUserId,
+              stock_symbol: stock_symbol.toUpperCase(),
+              quantity: parsedQuantity
+            })
+          });
+    
+          const result = await response.json();
+    
+          if (response.ok) {
+            alert(result.message || 'Buy successful!');
+            fetchTransactions(); // refresh the table
+          } else {
+            alert(result.error || 'Buy failed.');
+          }
+        } catch (err) {
+          console.error('BUY failed:', err);
+          alert('Server error during buy.');
+        }
+    }
+    
+  </script>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Buy Stock</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e8f5e9;
+      padding: 30px;
+    }
+    .box {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      color: #2e7d32;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #43a047;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #388e3c;
+    }
+    .back-link {
+      text-align: center;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Buy Stock</h2>
+    <form id="buyForm">
+      <input type="number" placeholder="User ID" id="user_id" required>
+      <input type="text" placeholder="Stock Symbol" id="stock_symbol" required>
+      <input type="number" placeholder="Quantity" id="quantity" required>
+      <button type="submit">Buy</button>
+    </form>
+    <div class="back-link">
+      <a href="view.html">⬅ Back to Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('buyForm').addEventListener('submit', async function (e) {
+      e.preventDefault(); // prevent form from reloading the page
+
+      const user_id = document.getElementById('user_id').value;
+      const stock_symbol = document.getElementById('stock_symbol').value;
+      const quantity = document.getElementById('quantity').value;
+
+      if (!user_id || !stock_symbol || !quantity) {
+        return alert("All fields are required!");
+      }
+
+      const parsedUserId = parseInt(user_id);
+      const parsedQuantity = parseInt(quantity);
+
+      if (isNaN(parsedUserId) || isNaN(parsedQuantity) || parsedQuantity <= 0) {
+        return alert("User ID and Quantity must be valid positive numbers.");
+      }
+
+      try {
+        const response = await fetch('http://localhost:4050/api/items/buy', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: parsedUserId,
+            stock_symbol: stock_symbol.toUpperCase(),
+            quantity: parsedQuantity
+          })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert(result.message || 'Buy successful!');
+          document.getElementById('buyForm').reset();
+        } else {
+          alert(result.error || 'Buy failed.');
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        alert('Server error during buy.');
+      }
+    });
+  </script>
+</body>
+</html>
